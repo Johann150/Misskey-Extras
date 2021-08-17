@@ -1,0 +1,31 @@
+### {
+  id: "8ec6c410-67b8-11eb-ae93-0242ac130002"
+  name: "Basically Preview EN"
+  version: "1.0.0"
+  author:  "robflop"
+  description: "Displays previews in the center due to specification"
+  permission: []
+  config: {
+    show_when_posting: {
+      type: "boolean"
+      label: "Show confirmation before posting"
+     }
+  }
+}
+
+@preview(note) {
+  Mk:dialog("" note.text "")
+  note
+}
+
+@preview_with_confirm(note) {
+  ? Mk:confirm("Post confirmation" `{note.text}{Str:lf}The note will be sent like this.`) {
+    <<note
+  }
+  _
+}
+
+Plugin:register_post_form_action("Basically Preview EN" preview)
+? Plugin:config.show_when_posting {
+  Plugin:register_note_post_interruptor(preview_with_confirm)
+}

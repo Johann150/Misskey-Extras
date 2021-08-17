@@ -1,0 +1,396 @@
+### {
+  name: "Catify"
+  version: "1.3.3"
+  author:  "volpeon"
+  description: "Various features to make your Misskey experience even more catty"
+  permission: []
+  config: {
+    users_to_cats: {
+      type: "boolean"
+      label: "Turn all users into cats"
+      description: "Turns all users into cats wherever possible"
+      default: yes
+    }
+    nyanify_notes: {
+      type: "boolean"
+      label: "Nyanify outgoing posts"
+      description: "Nyanifies your posts on sending"
+      default: yes
+    }
+    nyanify_extra: {
+      type: "boolean"
+      label: "Nyanify extra"
+      description: "Apply a stronger nyanification filter than Misskey's"
+      default: yes
+    }
+    nyanify_suffix: {
+      type: "boolean"
+      label: "-nya suffix"
+      description: "End sentences with -nya"
+      default: yes
+    }
+  }
+}
+
+:: Util {
+  @pipe(els) {
+    Arr:reduce(els, @(res, el) { el(res) })
+  }
+}
+
+:: MutableTrie {
+  @empty() {
+    {
+      value: _
+      children: {}
+    }
+  }
+
+  @has(trie, c) {
+    Obj:has(trie.children, c)
+  }
+
+  @get(trie, c) {
+    Obj:get(trie.children, c)
+  }
+
+  @insert(trie, key, value) {
+    $t <- trie
+
+    ~~ #c, Str:split(key) {
+      ? Core:not(has(t, c)) {
+        Obj:set(t.children, c, empty())
+      }
+
+      t <- get(t, c)
+    }
+
+    t.value <- value
+  }
+}
+
+:: MutableStream {
+  @of(str) {
+    #chars = Str:split(str)
+    {
+      chars: chars
+      len: Arr:len(chars)
+      pos: 1
+      state: {}
+    }
+  }
+
+  @end(stream) {
+    (stream.pos > stream.len)
+  }
+
+  @peek(stream) {
+    ? end(stream) {
+      << _
+    }
+
+    #chars = stream.chars
+    chars[stream.pos]
+  }
+
+  @take(stream) {
+    #c = peek(stream)
+
+    ? (c != _) {
+      stream.pos <- (stream.pos + 1)
+    }
+
+    c
+  }
+}
+
+@takeWhile(stream, cond, out) {
+  #c = MutableStream:peek(stream)
+
+  ? (c != _) {
+    ? cond(c) {
+      Arr:push(out, c)
+      stream.pos <- (stream.pos + 1)
+      takeWhile(stream, cond, out)
+    }
+  }
+}
+
+@takeUntil(stream, cond, out) {
+  takeWhile(stream, @(c) { Core:not(cond(c)) }, out)
+}
+
+@match(trie, stream) {
+  $tr <- trie
+  $path <- []
+  $successfulPath <- ""
+  $pos <- stream.pos
+  $action <- trie.value
+
+  @run() {
+    #c = MutableStream:take(stream)
+
+    ? (c != _) {
+      Arr:push(path, c)
+
+      ? MutableTrie:has(tr, c) {
+        tr <- MutableTrie:get(tr, c)
+        ? (tr.value != _) {
+          successfulPath <- Arr:join(path)
+          pos <- stream.pos
+          action <- tr.value
+        }
+        run()
+      }
+    }
+  }
+
+  run()
+
+  stream.pos <- pos
+
+  {
+    path: successfulPath
+    value: action
+  }
+}
+
+@actionContinue() {
+  {
+    type: "continue"
+  }
+}
+
+@actionNoNyanification() {
+  {
+    type: "noNyanification"
+  }
+}
+
+@actionReplace(str) {
+  {
+    type: "replace"
+    str: str
+  }
+}
+
+@actionReplaceWhole(str) {
+  {
+    type: "replaceWhole"
+    str: str
+  }
+}
+
+@actionSkipUntilChar(c) {
+  {
+    type: "skipUntilChar"
+    c: c
+  }
+}
+
+@actionSkipUntilSpace() {
+  {
+    type: "skipUntilSpace"
+  }
+}
+
+@actionSuffix(str) {
+  {
+    type: "suffix"
+    str: str
+  }
+}
+
+#tr = MutableTrie:empty()
+
+MutableTrie:insert(tr, "", actionContinue())
+
+MutableTrie:insert(tr, "(nya=off)", actionNoNyanification())
+
+MutableTrie:insert(tr, ":", actionSkipUntilChar(":"))
+MutableTrie:insert(tr, ": ", actionContinue())
+
+MutableTrie:insert(tr, "`", actionSkipUntilChar("`"))
+
+MutableTrie:insert(tr, "http://", actionSkipUntilSpace())
+MutableTrie:insert(tr, "https://", actionSkipUntilSpace())
+
+MutableTrie:insert(tr, "$[", actionSkipUntilSpace())
+
+MutableTrie:insert(tr, "な", actionReplace("にゃ"))
+MutableTrie:insert(tr, "ナ", actionReplace("ニャ"))
+MutableTrie:insert(tr, "ﾅ", actionReplace("ﾆｬ"))
+
+MutableTrie:insert(tr, "na", actionReplace("nya"))
+MutableTrie:insert(tr, "Na", actionReplace("Nya"))
+MutableTrie:insert(tr, "NA", actionReplace("NYA"))
+
+MutableTrie:insert(tr, "morning", actionReplace("mornyan"))
+MutableTrie:insert(tr, "Morning", actionReplace("Mornyan"))
+MutableTrie:insert(tr, "MORNING", actionReplace("MORNYAN"))
+
+MutableTrie:insert(tr, "everyone", actionReplace("everynyan"))
+MutableTrie:insert(tr, "Everyone", actionReplace("Everynyan"))
+MutableTrie:insert(tr, "EVERYONE", actionReplace("EVERYNYAN"))
+
+? Plugin:config.nyanify_extra {
+  MutableTrie:insert(tr, "nu", actionReplace("nyu"))
+  MutableTrie:insert(tr, "Nu", actionReplace("Nyu"))
+  MutableTrie:insert(tr, "NU", actionReplace("NYU"))
+
+  MutableTrie:insert(tr, "hello", actionReplaceWhole("henlo"))
+  MutableTrie:insert(tr, "Hello", actionReplaceWhole("Henlo"))
+  MutableTrie:insert(tr, "HELLO", actionReplaceWhole("HENLO"))
+
+  MutableTrie:insert(tr, "hand", actionReplaceWhole("paw"))
+  MutableTrie:insert(tr, "Hand", actionReplaceWhole("Paw"))
+  MutableTrie:insert(tr, "HAND", actionReplaceWhole("PAW"))
+
+  MutableTrie:insert(tr, "hands", actionReplaceWhole("paws"))
+  MutableTrie:insert(tr, "Hands", actionReplaceWhole("Paws"))
+  MutableTrie:insert(tr, "HANDS", actionReplaceWhole("PAWS"))
+
+  MutableTrie:insert(tr, "foot", actionReplaceWhole("paw"))
+  MutableTrie:insert(tr, "Foot", actionReplaceWhole("paw"))
+  MutableTrie:insert(tr, "FOOT", actionReplaceWhole("PAW"))
+
+  MutableTrie:insert(tr, "feet", actionReplaceWhole("paws"))
+  MutableTrie:insert(tr, "Feet", actionReplaceWhole("paws"))
+  MutableTrie:insert(tr, "FEET", actionReplaceWhole("PAWS"))
+
+  MutableTrie:insert(tr, "arm", actionReplaceWhole("foreleg"))
+  MutableTrie:insert(tr, "Arm", actionReplaceWhole("Foreleg"))
+  MutableTrie:insert(tr, "ARM", actionReplaceWhole("FORELEG"))
+
+  MutableTrie:insert(tr, "leg", actionReplaceWhole("hindleg"))
+  MutableTrie:insert(tr, "Leg", actionReplaceWhole("Hindleg"))
+  MutableTrie:insert(tr, "LEG", actionReplaceWhole("HINDLEG"))
+}
+
+? Plugin:config.nyanify_suffix {
+  MutableTrie:insert(tr, "...", actionContinue())
+  MutableTrie:insert(tr, ".", actionSuffix("-nya"))
+  MutableTrie:insert(tr, ";", actionSuffix("-nya"))
+  MutableTrie:insert(tr, "!", actionSuffix("-nya"))
+  MutableTrie:insert(tr, "?", actionSuffix("-nya"))
+  MutableTrie:insert(tr, "-nya.", actionContinue())
+  MutableTrie:insert(tr, "-nya;", actionContinue())
+  MutableTrie:insert(tr, "-nya!", actionContinue())
+  MutableTrie:insert(tr, "-nya?", actionContinue())
+}
+
+@constYes() {
+  yes
+}
+
+@isSpace(c) {
+  ? (c = _) { yes }
+  .? (c = " ") { yes }
+  .? (c = Str:lf) { yes }
+  . { no }
+}
+
+@isWordBoundary(c) {
+  ? isSpace(c) { yes }
+  .? (c = ".") { yes }
+  .? (c = ",") { yes }
+  .? (c = ";") { yes }
+  .? (c = "!") { yes }
+  .? (c = "?") { yes }
+  . { no }
+}
+
+@isCandidate(c) {
+  MutableTrie:has(tr, c)
+}
+
+@parse(stream, out) {
+  takeUntil(stream, isCandidate, out)
+
+  ? MutableStream:end(stream) {
+    << Arr:join(out)
+  }
+
+  #res = match(tr, stream)
+  #path = res.path
+  #action = res.value
+
+  ? action.type {
+    "continue" => {
+      ? (path = "") {
+        Arr:push(out, MutableStream:take(stream))
+      } . {
+        Arr:push(out, path)
+      }
+    }
+
+    "noNyanification" => {
+      Arr:push(out, path)
+      takeWhile(stream, constYes, out)
+    }
+
+    "replace" => {
+      Arr:push(out, action.str)
+    }
+
+    "replaceWhole" => {
+      #last = out[Arr:len(out)]
+      #next = MutableStream:peek(stream)
+      ? (isWordBoundary(last) & isWordBoundary(next)) {
+        Arr:push(out, action.str)
+      } . {
+        Arr:push(out, path)
+      }
+    }
+
+    "skipUntilChar" => {
+      Arr:push(out, path)
+      takeWhile(stream, @(c) { (c != action.c) }, out)
+      Arr:push(out, MutableStream:take(stream))
+    }
+
+    "skipUntilSpace" => {
+      Arr:push(out, path)
+      takeUntil(stream, isSpace, out)
+    }
+
+    "suffix" => {
+      #c = MutableStream:peek(stream)
+      ? isSpace(c) {
+        Arr:push(out, action.str)
+      }
+      Arr:push(out, path)
+    }
+  }
+
+  parse(stream, out)
+}
+
+@nyanify(text) {
+  parse(MutableStream:of(text), [])
+}
+
+@nyanifyNoteText(note) {
+  ? ((note.text = _) | (note.text = "")) {
+    << note
+  }
+
+  note.text <- nyanify(note.text)
+
+  note
+}
+
+@catifyNote(note) {
+  note.user.isCat <- yes
+  note <- nyanifyNoteText(note)
+  note
+}
+
+? Plugin:config.users_to_cats {
+  Plugin:register_note_view_interruptor(catifyNote)
+}
+
+? Plugin:config.nyanify_notes {
+  Plugin:register_note_post_interruptor(nyanifyNoteText)
+}
+

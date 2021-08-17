@@ -1,0 +1,68 @@
+diff --git a/src/client/components/note.sub.vue b/src/client/components/note.sub.vue
+index 899c4b2f1..881792fd7 100644
+--- a/src/client/components/note.sub.vue
++++ b/src/client/components/note.sub.vue
+@@ -1,5 +1,5 @@
+ <template>
+-<div class="wrpstxzv" :class="{ children }" v-size="{ max: [450] }">
++<div class="wrpstxzv" :class="{ children }" v-size="{ max: [450] }" @click.stop="checkCollapse">
+ 	<div class="main">
+ 		<MkAvatar class="avatar" :user="note.user"/>
+ 		<div class="body">
+@@ -64,6 +64,25 @@ export default defineComponent({
+ 		};
+ 	},
+ 
++	methods: {
++		checkCollapse(event) {
++			// calculate x position within the element
++			var rect = event.target.getBoundingClientRect();
++			var x = event.clientX - rect.left;
++
++			// the margin for direct replies is wider
++			let padding = 32;
++			if (event.target.classList.contains("children")) {
++				padding = 16;
++			}
++
++			if (x < padding) {
++				// this click was in the left padding
++				event.target.classList.toggle('collapsed');
++			}
++		}
++	}
++
+ 	created() {
+ 		if (this.detail) {
+ 			os.api('notes/children', {
+@@ -142,5 +161,30 @@ export default defineComponent({
+ 		border-left: solid 0.5px var(--divider);
+ 		margin-top: 10px;
+ 	}
++
++	&.collapsed {
++		max-height: 30px;
++		overflow: hidden;
++		/* make it clear that this post is collapsed */
++		border-left: dashed 0.5px var(--accent);
++
++		> .children {
++			/* hide any further children */
++			display: none;
++		}
++
++		position: relative;
++
++		&:after {
++			display: block;
++			content: '';
++			position: absolute;
++			bottom: 0;
++			z-index: 2;
++			height: 100%;
++			width: 100%;
++			background: linear-gradient(0deg, var(--panel), #0000 10px);
++		}
++	}
+ }
+ </style>

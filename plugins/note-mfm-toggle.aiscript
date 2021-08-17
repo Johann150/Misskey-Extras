@@ -1,0 +1,498 @@
+### {
+  name: "Note MFM Toggle"
+  version: "1.1.0"
+  author:  "volpeon, Johann150"
+  description: "MFM can be toggled for specific notes from the three dot menu of the note."
+  permission: []
+  config: {}
+}
+
+:: Util {
+  @pipe(els) {
+    #len = Arr:len(els)
+
+    ? (len = 0) {
+      << _
+    }
+
+    #result = els[1]
+
+    @run(i) {
+      ? (i > len) {
+        << result
+      }
+
+      #el = els[i]
+      result <- el(result)
+      
+      run((i + 1))
+    }
+
+    run(2)
+  }
+
+  @merge(obj1, obj2) {
+    #o = Obj:copy(obj1)
+    #kvs = Obj:kvs(obj2)
+    #len = Arr:len(kvs)
+  
+    @step(i) {
+      ? (i > len) {
+        << o
+      }
+
+      #kv = kvs[i]
+      Obj:set(o, kv[1], kv[2])
+
+      step((i + 1))
+    }
+
+    step(1)
+  }
+}
+
+:: Stream {
+  @resultOk(read, stream) {
+    {
+      ok: yes
+      read: read
+      stream: stream
+    }
+  }
+
+  @resultFail() {
+    {
+      ok: no
+    }
+  }
+
+  @mk(str, pos) {
+    {
+      str: str
+      pos: pos
+    }
+  }
+
+  @of(str) {
+    mk(str, 1)
+  }
+
+  @read(stream, length) {
+    #remainingLength = ((Str:len(stream.str) - stream.pos) + 1)
+
+    ? (length > remainingLength) {
+      << resultFail()
+    }
+
+    #newPos = (stream.pos + length)
+
+    resultOk(Str:slice(stream.str, stream.pos, newPos), mk(stream.str, newPos))
+  }
+}
+
+:: Parser {
+  // Constructors
+
+  @resultOk(stream, value) {
+    {
+      ok: yes
+      stream: stream
+      value: value
+    }
+  }
+
+  @resultFail(stream, error) {
+    {
+      ok: no
+      stream: stream
+      error: error
+    }
+  }
+
+  @mk(parse) {
+    {
+      parse: parse
+    }
+  }
+  
+  @ok(value) {
+    mk(@(stream) { resultOk(stream, value) })
+  }
+  
+  @fail(error) {
+    mk(@(stream) { resultFail(stream, error) })
+  }
+
+  @anyToken(length) {
+    mk(@(stream) {
+      #result = Stream:read(stream, length)
+
+      ? result.ok {
+        << resultOk(result.stream, result.read)
+      }
+
+      resultFail(stream, "End of input")
+    })
+  }
+
+  @eof() {
+    mk(@(stream) {
+      #result = Stream:read(stream, 1)
+
+      ? result.ok {
+        << resultFail(stream, "Expected end of input")
+      }
+
+      resultOk(stream, yes)
+    })
+  }
+
+  // Basic operators
+
+  @then(cont) {
+    @(parser) {
+      mk(@(stream) {
+        #result = parser.parse(stream)
+
+        ? result.ok {
+          #parserCont = cont(result.value)
+          << parserCont.parse(result.stream)
+        }
+    
+        result
+      })
+    }
+  }
+
+  @map(fn) {
+    @(parser) {
+      mk(@(stream) {
+        #result = parser.parse(stream)
+
+        ? result.ok {
+          << resultOk(result.stream, fn(result.value))
+        }
+    
+        result
+      })
+    }
+  }
+
+  // Generic combinators
+  
+  @satisfy(condition, description) {
+    @(parser) {
+      mk(@(stream) {
+        #result = parser.parse(stream)
+        
+        ? result.ok {
+          ? condition(result.value) {
+            << resultOk(result.stream, result.value)
+          }
+          
+          << resultFail(stream, description)
+        }
+
+        result
+      })
+    }
+  }
+
+  @oneOf(parsers) {
+    #len = Arr:len(parsers)
+
+    mk(@(stream) {
+      #errors = []
+
+      @run(i) {
+        ? (i > len) {
+          << resultFail(stream, Arr:join(["All parsers failed: " Arr:join(errors, "; ")]))
+        }
+
+        #parser = parsers[i]
+        #result = parser.parse(stream)
+        
+        ? result.ok {
+          << result
+        }
+
+        Arr:push(errors, Arr:join(["(" Core:to_str(i) ") " result.error]))
+        
+        run((i + 1))
+      }
+
+      run(1)
+    })
+  }
+
+  @many(parser) {
+    @run(matches) {
+      mk(@(stream) {
+        #result = parser.parse(stream)
+        
+        ? result.ok {
+          #step = run(Arr:concat(matches, [result.value]))
+          << step.parse(result.stream)
+        }
+
+        resultOk(result.stream, matches)
+      })
+    }
+
+    run([])
+  }
+
+  @many1(parser) {
+    Util:pipe([
+      many(parser)
+      satisfy(@(value) {
+        ? (Arr:len(value) = 0) { no } . { yes }
+      }, "Expected at least one match")
+    ])
+  }
+
+  // Specialized string parsers
+
+  @token(str) {
+    Util:pipe([
+      anyToken(Str:len(str))
+      satisfy(@(value) {
+        ? (value = str) { yes } . { no }
+      }, Arr:join(["Expected '" str "'"]))
+    ])
+  }
+
+  @takeWhile(condition) {
+    mk(@(stream) {
+      #matches = []
+
+      @run(s) {
+        #result = Stream:read(s, 1)
+
+        ? result.ok {
+          ? condition(result.read) {
+            Arr:push(matches, result.read)
+            << run(result.stream)
+          }
+        }
+
+        resultOk(s, Arr:join(matches))
+      }
+
+      run(stream)
+    })
+  }
+
+  @takeWhile1(condition) {
+    Util:pipe([
+      takeWhile(condition)
+      satisfy(@(value) {
+        ? (Str:len(value) = 0) { no } . { yes }
+      }, "Expected at least one match")
+    ])
+  }
+}
+
+:: ParserStore {
+  @mk(parser) {
+    {
+      parser: parser
+    }
+  }
+
+  @create() {
+    mk(Parser:ok({}))
+  }
+
+  @merge(parserFn) {
+    @(store) {
+      mk(
+        Util:pipe([
+          store.parser
+          Parser:then(@(value1) {
+            #parser = parserFn(value1)
+            Util:pipe([
+              parser
+              Parser:map(@(value2) {
+                Util:merge(value1, value2)
+              })
+            ])
+          })
+        ])
+      )
+    }
+  }
+
+  @skip(parserFn) {
+    @(store) {
+      mk(
+        Util:pipe([
+          store.parser
+          Parser:then(@(value) {
+            #parser = parserFn(value)
+            Util:pipe([
+              parser
+              Parser:map(@() { value })
+            ])
+          })
+        ])
+      )
+    }
+  }
+
+  @store(key, parserFn) {
+    merge(@(value1) {
+      #parser = parserFn(value1)
+      Util:pipe([
+        parser
+        Parser:map(@(value2) { 
+          #o = {}
+          Obj:set(o, key, value2)
+          o
+        })
+      ])
+    })
+  }
+
+  @parser(store) {
+    store.parser
+  }
+}
+
+#spaces = Parser:takeWhile(@(value) {
+  ? (value = " ") { yes } . { no }
+})
+
+#mfmTagOpen = Parser:token("$[")
+
+#mfmTagName = Parser:takeWhile1(@(value) {
+  ? (value = " ") { no } . { yes }
+})
+
+#mfmTagClose = Parser:token("]")
+
+#mfmTagText = Parser:takeWhile1(@(value) {
+  ? Str:incl("`$]", value) { no } . { yes }
+})
+
+#codeToggle = Parser:token("`")
+
+#codeBlockToggle = Parser:token("```")
+
+#codeText = Parser:takeWhile1(@(value) {
+  ? (value = "`") { no } . { yes }
+})
+
+#code = Util:pipe([
+  ParserStore:create()
+  ParserStore:skip(@() { codeToggle })
+  ParserStore:store("content", @() { codeText })
+  ParserStore:skip(@() { codeToggle })
+  ParserStore:parser
+  Parser:map(@(store) { Arr:join(["`" store.content "`"]) })
+])
+
+#codeBlock = Util:pipe([
+  ParserStore:create()
+  ParserStore:skip(@() { codeBlockToggle })
+  ParserStore:store("content", @() { codeText })
+  ParserStore:skip(@() { codeBlockToggle })
+  ParserStore:parser
+  Parser:map(@(store) { Arr:join(["`" store.content "`"]) })
+])
+
+#mfmTag = Util:pipe([
+  ParserStore:create()
+  ParserStore:skip(@() { mfmTagOpen })
+  ParserStore:skip(@() { mfmTagName })
+  ParserStore:skip(@() { spaces })
+  ParserStore:store("content", @() { mfmTagContent })
+  ParserStore:skip(@() { mfmTagClose })
+  ParserStore:parser
+  Parser:map(@(store) { store.content })
+])
+
+#mfmTagContent = Util:pipe([
+  Parser:many(
+    Parser:oneOf([
+      mfmTagText
+      codeBlock
+      code
+      mfmTag
+      Parser:token("`")
+      Parser:token("$")
+    ])
+  )
+  Parser:map(@(parts) { Arr:join(parts) })
+])
+
+#noteText = Parser:takeWhile1(@(value) {
+  ? Str:incl("`$", value) { no } . { yes }
+})
+
+#noteContent = Util:pipe([
+  Parser:many(
+    Parser:oneOf([
+      noteText
+      codeBlock
+      code
+      mfmTag
+      Parser:token("`")
+      Parser:token("$")
+    ])
+  )
+  Parser:map(@(parts) { Arr:join(parts) })
+])
+
+@strip(note) {
+  ? (note.renote = _) {
+    #result = noteContent.parse(Stream:of(note.text))
+
+    ? result.ok {
+      note.text <- result.value
+    }
+  }
+  . {
+    #result = noteContent.parse(Stream:of(note.renote.text))
+
+    ? result.ok {
+      note.renote.text <- result.value
+    }
+  }
+  
+  note
+}
+
+@toggleMFM(note) {
+	$mutes <- Mk:load("mutes")
+	? (mutes = _) {
+		mutes <- [note.id]
+		Mk:dialog("MFM disabled for this note" "Reload or go to different page to take effect.")
+	} . {
+		? Arr:incl(mutes note.id) {
+			mutes <- Arr:filter(mutes @(x){(x != note.id)})
+			Mk:dialog("MFM reenabled for this note" "Reload or go to different page to take effect.")
+		} . {
+			Arr:push(mutes note.id)
+			Mk:dialog("MFM disabled for this note" "Reload or go to different page to take effect.")
+		}
+	}
+	Mk:save("mutes" mutes)
+}
+
+@checkMute(note) {
+	#mutes = Mk:load("mutes")
+	? (mutes != _) {
+		? Arr:incl(mutes note.id) {
+			note <- strip(note)
+		}
+		? Arr:incl(mutes note.renote.id) {
+			note.renote <- strip(note.renote)
+		}
+	}
+	<<note
+}
+
+
+Plugin:register_note_action("toggle MFM" toggleMFM)
+Plugin:register_note_view_interruptor(checkMute)

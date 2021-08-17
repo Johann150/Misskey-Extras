@@ -1,0 +1,26 @@
+diff --git a/src/misc/is-muted-user-related.ts b/src/misc/is-muted-user-related.ts
+index 2caa743f9..c57f427fc 100644
+--- a/src/misc/is-muted-user-related.ts
++++ b/src/misc/is-muted-user-related.ts
+@@ -1,15 +1,10 @@
+ export function isMutedUserRelated(note: any, mutedUserIds: Set<string>): boolean {
+-	if (mutedUserIds.has(note.userId)) {
+-		return true;
++	switch (true) {
++		case mutedUserIds.has(note.userId): // the note author is muted
++		case note.mentions && note.mentions.some((user: string) => mutedUserIds.has(user)): // any of the mentioned users is muted
++		case note.reply    && isMutedUserRelated(note.reply, mutedUserIds):
++		case note.renote   && isMutedUserRelated(note.renote, mutedUserIds):
++			return true;
+ 	}
+-
+-	if (note.reply != null && mutedUserIds.has(note.reply.userId)) {
+-		return true;
+-	}
+-
+-	if (note.renote != null && mutedUserIds.has(note.renote.userId)) {
+-		return true;
+-	}
+-
+ 	return false;
+ }

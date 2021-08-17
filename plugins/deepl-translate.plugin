@@ -1,0 +1,21 @@
+### {
+  name: "DeepL Translate"
+  version: "1.1.1"
+  author:  "volpeon"
+  description: "Translate posts from any language into any other language with DeepL"
+  permission: []
+  config: {
+    target_language: {
+      type: "string"
+      label: "Target language to translate into (ISO 639-1 language code)"
+      default: "en"
+    }
+  }
+}
+
+@translate(note) {
+  Plugin:open_url(Arr:join(["https://www.deepl.com/translator#auto/" Plugin:config.target_language "/" Str:replace(Str:replace(note.text "/" "\%2F") "#" "%23")]))
+  note
+}
+
+Plugin:register_note_action("Translate" translate)
