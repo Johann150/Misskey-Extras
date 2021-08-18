@@ -1,6 +1,6 @@
 ### {
   name: "Catify"
-  version: "1.3.3"
+  version: "1.3.6"
   author:  "volpeon"
   description: "Various features to make your Misskey experience even more catty"
   permission: []
@@ -8,26 +8,32 @@
     users_to_cats: {
       type: "boolean"
       label: "Turn all users into cats"
-      description: "Turns all users into cats wherever possible"
+      description: "Turns all users into cats wherever possible."
       default: yes
     }
     nyanify_notes: {
       type: "boolean"
       label: "Nyanify outgoing posts"
-      description: "Nyanifies your posts on sending"
+      description: "Nyanifies your posts on sending."
       default: yes
     }
     nyanify_extra: {
       type: "boolean"
       label: "Nyanify extra"
-      description: "Apply a stronger nyanification filter than Misskey's"
+      description: "Apply a stronger nyanification filter than Misskey's."
       default: yes
     }
     nyanify_suffix: {
-      type: "boolean"
-      label: "-nya suffix"
-      description: "End sentences with -nya"
-      default: yes
+      type: "string"
+      label: "Sentence suffix"
+      description: "End sentences with this suffix. An empty suffix disables this feature."
+      default: ", nya"
+    }
+    nyanify_suffix_freq: {
+      type: "number"
+      label: "Sentence suffix frequency"
+      description: "Apply the suffix every nth sentence."
+      default: 1
     }
   }
 }
@@ -188,6 +194,12 @@
   }
 }
 
+@actionSkipWordBoundary() {
+  {
+    type: "skipWordBoundary"
+  }
+}
+
 @actionSkipUntilSpace() {
   {
     type: "skipUntilSpace"
@@ -209,11 +221,13 @@ MutableTrie:insert(tr, "(nya=off)", actionNoNyanification())
 
 MutableTrie:insert(tr, ":", actionSkipUntilChar(":"))
 MutableTrie:insert(tr, ": ", actionContinue())
+MutableTrie:insert(tr, `:{Str:lf}`, actionContinue())
 
 MutableTrie:insert(tr, "`", actionSkipUntilChar("`"))
 
 MutableTrie:insert(tr, "http://", actionSkipUntilSpace())
 MutableTrie:insert(tr, "https://", actionSkipUntilSpace())
+MutableTrie:insert(tr, "@", actionSkipUntilSpace())
 
 MutableTrie:insert(tr, "$[", actionSkipUntilSpace())
 
@@ -265,18 +279,24 @@ MutableTrie:insert(tr, "EVERYONE", actionReplace("EVERYNYAN"))
   MutableTrie:insert(tr, "leg", actionReplaceWhole("hindleg"))
   MutableTrie:insert(tr, "Leg", actionReplaceWhole("Hindleg"))
   MutableTrie:insert(tr, "LEG", actionReplaceWhole("HINDLEG"))
+
+  MutableTrie:insert(tr, "now", actionReplaceWhole("nyow"))
+  MutableTrie:insert(tr, "Now", actionReplaceWhole("Nyow"))
+  MutableTrie:insert(tr, "NOW", actionReplaceWhole("NYOW"))
 }
 
-? Plugin:config.nyanify_suffix {
-  MutableTrie:insert(tr, "...", actionContinue())
-  MutableTrie:insert(tr, ".", actionSuffix("-nya"))
-  MutableTrie:insert(tr, ";", actionSuffix("-nya"))
-  MutableTrie:insert(tr, "!", actionSuffix("-nya"))
-  MutableTrie:insert(tr, "?", actionSuffix("-nya"))
-  MutableTrie:insert(tr, "-nya.", actionContinue())
-  MutableTrie:insert(tr, "-nya;", actionContinue())
-  MutableTrie:insert(tr, "-nya!", actionContinue())
-  MutableTrie:insert(tr, "-nya?", actionContinue())
+#nyaSuffix = Plugin:config.nyanify_suffix
+#nyaSuffixFreq = Plugin:config.nyanify_suffix_freq
+
+? (nyaSuffix != "") {
+  MutableTrie:insert(tr, ".", actionSuffix(nyaSuffix))
+  MutableTrie:insert(tr, ";", actionSuffix(nyaSuffix))
+  MutableTrie:insert(tr, "!", actionSuffix(nyaSuffix))
+  MutableTrie:insert(tr, "?", actionSuffix(nyaSuffix))
+  MutableTrie:insert(tr, `{nyaSuffix}.`, actionSkipWordBoundary())
+  MutableTrie:insert(tr, `{nyaSuffix};`, actionSkipWordBoundary())
+  MutableTrie:insert(tr, `{nyaSuffix}!`, actionSkipWordBoundary())
+  MutableTrie:insert(tr, `{nyaSuffix}?`, actionSkipWordBoundary())
 }
 
 @constYes() {
@@ -304,7 +324,7 @@ MutableTrie:insert(tr, "EVERYONE", actionReplace("EVERYNYAN"))
   MutableTrie:has(tr, c)
 }
 
-@parse(stream, out) {
+@parse(stream, out, sentenceNo) {
   takeUntil(stream, isCandidate, out)
 
   ? MutableStream:end(stream) {
@@ -314,6 +334,7 @@ MutableTrie:insert(tr, "EVERYONE", actionReplace("EVERYNYAN"))
   #res = match(tr, stream)
   #path = res.path
   #action = res.value
+  $sentence <- sentenceNo
 
   ? action.type {
     "continue" => {
@@ -334,7 +355,8 @@ MutableTrie:insert(tr, "EVERYONE", actionReplace("EVERYNYAN"))
     }
 
     "replaceWhole" => {
-      #last = out[Arr:len(out)]
+      #len = Arr:len(out)
+      #last = ? (len = 0) { _ } . { out[len] }
       #next = MutableStream:peek(stream)
       ? (isWordBoundary(last) & isWordBoundary(next)) {
         Arr:push(out, action.str)
@@ -354,20 +376,33 @@ MutableTrie:insert(tr, "EVERYONE", actionReplace("EVERYNYAN"))
       takeUntil(stream, isSpace, out)
     }
 
-    "suffix" => {
-      #c = MutableStream:peek(stream)
-      ? isSpace(c) {
-        Arr:push(out, action.str)
-      }
+    "skipWordBoundary" => {
       Arr:push(out, path)
+      takeWhile(stream, isWordBoundary, out)
+    }
+
+    "suffix" => {
+      #len = Arr:len(out)
+      #last = ? (len = 0) { _ } . { out[len] }
+      #next = MutableStream:peek(stream)
+      ? (Core:not(isWordBoundary(last)) & isWordBoundary(next)) {
+        ? ((sentence % nyaSuffixFreq) = 0) {
+          Arr:push(out, action.str)
+        }
+        sentence <- (sentence + 1)
+        Arr:push(out, path)
+        takeWhile(stream, isWordBoundary, out)
+      } . {
+        Arr:push(out, path)
+      }
     }
   }
 
-  parse(stream, out)
+  parse(stream, out, sentence)
 }
 
 @nyanify(text) {
-  parse(MutableStream:of(text), [])
+  parse(MutableStream:of(text), [], nyaSuffixFreq)
 }
 
 @nyanifyNoteText(note) {
@@ -383,6 +418,11 @@ MutableTrie:insert(tr, "EVERYONE", actionReplace("EVERYNYAN"))
 @catifyNote(note) {
   note.user.isCat <- yes
   note <- nyanifyNoteText(note)
+
+  ? (note.renote != _) {
+    note.renote <- catifyNote(note.renote)
+  }
+
   note
 }
 
