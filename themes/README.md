@@ -5,11 +5,11 @@ you want.
 
 ## List of Themes
 
-< List with clickable links goes here >
+1. [Dracula](#Dracula)
 
-## Example Theme Name
+## Dracula
 
-* **Author**: Francisca Fonsecn
-* **Date**: 1970-01-01
-* **Misskey Version**: 12.85.1
-* **Description**: A custom pink and sparkly theme for Misskey.
+* **Author**: Manton
+* **Date**: 2021-08-18
+* **Misskey Version**: 12.88.0
+* **Description**: The Dracula theme for Misskey.
