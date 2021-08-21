@@ -9,6 +9,7 @@ tricks go here.
 1. [ActivityPub Signging](#ActivityPub-Signing)
 2. [AiScript source in pages](#aiscript-source-in-pages)
 3. [Worker Processes](#worker-processes)
+4. [Memory for yarn build](#memory-for-yarn-build)
 
 ## ActivityPub Signing
 
@@ -55,3 +56,26 @@ to find one that results in optimal performance.
 
 **Note:** this isn't recommended by the Misskey developers due to potentially higher
 RAM utilization. *Your mileage may vary.*
+
+## Memory for `yarn build`
+
+* **Author**: Normandy
+* **Date**: 2021-08-20
+* **Misskey Version**: 12.88.0
+* **Description**: Deadling with memory issues for `yarn build`
+
+When installing or upgrading Misskey, the `yarn build` step may run out of
+memory on systems with 2GB or less RAM. There's a few things you can try to do
+in this case:
+1. If you're running in a VM, you may want to temporarily increase your RAM to
+   4GB or higher. This may cost extra if you're renting from a cloud provider.
+   If you don't want to deal with the extra cost permanently, you can scale back
+   down after running `yarn build`.
+2. Increase the heap size for NodeJS. Do this by setting the following environment
+   variable: `NODE_OPTIONS=--max-old-space-size=1536`
+3. Add swap space by creating a swapfile of at least 1GB. A guide on how to do this
+   can be found here: https://linuxize.com/post/create-a-linux-swap-file/
+
+You may have to use both options 2 and 3 if you are on a very memory
+constrained system. Keep in mind Misskey itself needs 1GB RAM minimum
+to operate well. 
