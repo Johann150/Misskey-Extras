@@ -1,0 +1,3 @@
+.article:not(:hover) span {
+	animation: none !important;
+}
