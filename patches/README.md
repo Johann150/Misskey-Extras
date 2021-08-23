@@ -9,10 +9,10 @@ Misskey any more.
 
 ## List of Patches
 
-1. [Truncate Profiles](#Truncate-Profiles)
-2. [MFM search feature](#MFM-search-feature)
-3. [Fix Leaky Mutes](#Fix-Leaky-Mutes)
-4. [Collapsible Threads](#Collapsible-Threads)
+1. [MFM search feature](#MFM-search-feature)
+2. [Fix Leaky Mutes](#Fix-Leaky-Mutes)
+3. [Collapsible Threads](#Collapsible-Threads)
+4. [Compact Notifications](#Compact-Notifications)
 
 ## MFM search feature
 
@@ -68,3 +68,13 @@ It allows you to click on the left margin of a thread (e.g. the bar on the left
 that makes up a thread) to collapse it and its replies. You can of course also
 click in the left margin of a direct reply of the note you are viewing to
 collapse it.
+
+## Compact Notifications
+
+* **Author**: Johann150
+* **Date**: 2021-08-23
+* **Misskey Version**: since 12.64.2
+* **Description**: Remove text of replied-to posts from notifications.
+
+The text of replied to or renoted notes is not shown in the notifications bar,
+i.e. instead of 'reply RE: post' the notification is just 'reply'.
