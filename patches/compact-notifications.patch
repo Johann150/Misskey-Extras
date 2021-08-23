@@ -1,0 +1,22 @@
+
+
+diff --git a/src/misc/get-note-summary.ts b/src/misc/get-note-summary.ts
+index a1866fb20..53c6cf863 100644
+--- a/src/misc/get-note-summary.ts
++++ b/src/misc/get-note-summary.ts
+@@ -30,6 +30,7 @@ export const getNoteSummary = (note: any, locale: any): string => {
+ 		summary += ` (${locale['poll']})`;
+ 	}
+ 
++	/*
+ 	// 返信のとき
+ 	if (note.replyId) {
+ 		if (note.reply) {
+@@ -47,6 +48,7 @@ export const getNoteSummary = (note: any, locale: any): string => {
+ 			summary += '\n\nRN: ...';
+ 		}
+ 	}
++	*/
+ 
+ 	return summary.trim();
+ };
