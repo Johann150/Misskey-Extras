@@ -1,0 +1,21 @@
+### {
+  name: "SauceNao Image Search"
+  version: "0.5"
+  author:  "volpeon, puniko"
+  description: "performs a reverse image search using sauce nao"
+  permission: []
+}
+
+@sauceSearch(note) {
+  #files = note.files
+  #len = Arr:len(files)
+
+  ? (len > 0) {
+    #file = files[1]
+    Plugin:open_url(Arr:join(["https://saucenao.com/search.php?url=" Str:replace(Str:replace(file.url "/" "%2F") "#" "%23")]))    
+  }
+
+  note
+}
+
+Plugin:register_note_action("Sauce please!" sauceSearch)
