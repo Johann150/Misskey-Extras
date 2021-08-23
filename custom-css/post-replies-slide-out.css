@@ -1,0 +1,14 @@
+.tabs ~ * .reply-to,
+.notifications .reply-to {
+  max-height: 70px; /* 38px profile pic + 16px padding bottom */
+  box-sizing: border-box;
+  overflow: hidden;
+  transition: max-height .6s, box-shadow .6s;
+  box-shadow: 0 -15px 10px inset var(--bg);
+}
+
+.tabs ~ * .reply-to:hover,
+.notifications .reply-to:hover {
+  max-height: 100vh;
+  box-shadow: none;
+}
