@@ -24,7 +24,7 @@ how Pleroma displays replies.
 
 ## MFM on Hover
 
-* **Author**: Fristi
+* **Author**: Fristi, Volpeon, Robflop
 * **Date**: 2021-08-23
 * **Misskey Version**: 12.89.0
 * **Description**: A custom CSS snippet which stops MFM animations until you
