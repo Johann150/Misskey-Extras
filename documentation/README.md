@@ -10,6 +10,7 @@ tricks go here.
 2. [AiScript source in pages](#aiscript-source-in-pages)
 3. [Worker Processes](#worker-processes)
 4. [Memory for yarn build](#memory-for-yarn-build)
+5. [MFM Editor](#mfm-editor)
 
 ## ActivityPub Signing
 
@@ -79,3 +80,11 @@ in this case:
 You may have to use both options 2 and 3 if you are on a very memory
 constrained system. Keep in mind Misskey itself needs 1GB RAM minimum
 to operate well. 
+
+## MFM Editor
+
+* **Author**: Puniko
+* **Date**: 2021-08-25
+* **Misskey Version**: 12.88.0
+* **Description**: An MFM editor was created to allow easy experimentation and 
+crafting of MFM Art. It can be found at: https://mfm.absturztau.be/
