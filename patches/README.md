@@ -9,13 +9,12 @@ Misskey any more.
 
 ## List of Patches
 
-- [Misskey Patches](#misskey-patches)
-  - [List of Patches](#list-of-patches)
-  - [MFM search feature](#mfm-search-feature)
-  - [Fix Leaky Mutes](#fix-leaky-mutes)
-  - [Collapsible Threads](#collapsible-threads)
-  - [Compact Notifications](#compact-notifications)
-  - [Compatibility Keyoxide](#compatibility-keyoxide)
+1. [MFM search feature](#MFM-search-feature)
+2. [Fix Leaky Mutes](#Fix-Leaky-Mutes)
+3. [Collapsible Threads](#Collapsible-Threads)
+4. [Compact Notifications](#Compact-Notifications)
+5. [Compatibility Keyoxide](#compatibility-keyoxide)
+
 
 ## MFM search feature
 
