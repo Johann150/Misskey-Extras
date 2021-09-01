@@ -15,7 +15,6 @@ Misskey any more.
 4. [Compact Notifications](#Compact-Notifications)
 5. [Compatibility Keyoxide](#compatibility-keyoxide)
 
-
 ## MFM search feature
 
 * **Author**: Johann150
