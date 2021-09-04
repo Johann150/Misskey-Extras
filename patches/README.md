@@ -13,6 +13,7 @@ Misskey any more.
 2. [Fix Leaky Mutes](#Fix-Leaky-Mutes)
 3. [Collapsible Threads](#Collapsible-Threads)
 4. [Compact Notifications](#Compact-Notifications)
+5. [Compatibility Keyoxide](#compatibility-keyoxide)
 
 ## MFM search feature
 
@@ -78,3 +79,15 @@ collapse it.
 
 The text of replied to or renoted notes is not shown in the notifications bar,
 i.e. instead of 'reply RE: post' the notification is just 'reply'.
+
+## Compatibility Keyoxide
+
+* **Author**: sousuke0422
+* **Date**: 2021-08-31
+* **Misskey Version**: since 12.68.0
+* **Description**: You will be able to register with Keyoxide.
+
+Keyoxide uses application/json for authentication, so add support for it.
+It is treated as a mastodon in Keyoxide specification.
+
+Ported from ayuskey 5.11.0.
