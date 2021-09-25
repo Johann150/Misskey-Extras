@@ -1,25 +1,25 @@
-.tabs ~ * div[tabindex="-1"] {
-    overflow: visible;
-    contain: none;
+.notes div[tabindex="-1"] {
+  overflow: visible;
+  contain: none;
 }
 
-.tabs ~ * div[tabindex="-1"] .reply-to {
-    position: absolute;
-    left: 2%;
-    bottom: calc(100% - 1em);
-    max-width: 85%;
-    box-sizing: border-box;
-    background: var(--panelHighlight);
-    z-index: 1000;
-    padding: 20px 24px;
-    box-shadow: 0 .5em 2em rgba(0, 0, 0, .5);
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity .2s, visibility 0s ease .2s;
+.notes div[tabindex="-1"] .reply-to {
+  position: absolute;
+  left: 2%;
+  bottom: calc(100% - 1em);
+  max-width: 85%;
+  box-sizing: border-box;
+  background: var(--panelHighlight);
+  z-index: 1000;
+  padding: 20px 24px;
+  box-shadow: 0 .5em 2em rgba(0, 0, 0, .5);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .2s, visibility 0s ease .2s;
 }
 
-.tabs ~ * div[tabindex="-1"]:hover .reply-to {
-    opacity: 1;
-    visibility: visible;
-    transition: opacity .2s ease .5s, visibility 0s ease .5s;
+.notes div[tabindex="-1"]:hover .reply-to {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity .2s ease .75s, visibility 0s ease .75s;
 }

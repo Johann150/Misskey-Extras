@@ -11,8 +11,8 @@ or behaves.
 ## Post Replies on Hover
 
 * **Author**: Volpeon
-* **Date**: 2021-08-05
-* **Misskey Version**: 12.85.1
+* **Date**: 2021-09-25
+* **Misskey Version**: 12.91.0
 * **Description**: A custom CSS snippet to declutter the timeline, similar to
 how Pleroma displays replies.
 
