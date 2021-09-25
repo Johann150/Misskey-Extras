@@ -7,6 +7,8 @@ or behaves.
 
 1. [Post Replies on Hover](#Post-Replies-on-Hover)
 2. [MFM on Hover](#MFM-on-Hover)
+3. [Post Replies slide out](#Post-Replies-slide-out)
+4. [Wiggly Cat ears](#Wiggly-Cat-Ears)
 
 ## Post Replies on Hover
 
@@ -23,7 +25,7 @@ how Pleroma displays replies.
 
 ## MFM on Hover
 
-* **Author**: Fristi
+* **Author**: Fristi, Volpeon, Robflop
 * **Date**: 2021-08-23
 * **Misskey Version**: 12.89.0
 * **Description**: A custom CSS snippet which stops MFM animations until you
@@ -31,3 +33,22 @@ are hovering over the post. This makes it much less annoying to browse your
 timeline if someone has made a post with MFM that causes the post's contents
 to go outside of the post itself.
 
+## Post Replies slide out
+
+* **Author**: Johann150
+* **Date**: 2021-08-23
+* **Misskey Version**: at least since 12.83.4
+* **Description**: Alternate way to collapse parent posts that does not allow
+overflow.
+
+- Parent posts are shortened to the user name and first line of content.
+- When you hover over the parent post, the main post will slide down to make
+  the rest of the parent post visible.
+
+## Wiggly Cat Ears
+
+* **Author**: Puniko
+* **Date**: 2021-09-10
+* **Misskey Version**: 12.90.1
+* **Description**: Plays an ear wiggle animation on hovering over avatars. Basically
+what the pleroma-mod-catify had, but now for misskey
