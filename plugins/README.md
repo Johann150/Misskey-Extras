@@ -6,13 +6,16 @@ functionality.
 All plugins can be installed by going to `Settings → Plugins → Install Plugins`
 and pasting the plugin's code into the text box, one plugin at a time.
 
+If you are on an older version of Misskey, you might also be interested in the
+[archive](archive) of plugins that are not relevant for the latest version of
+Misskey any more.
+
 ## List of Plugins
 
 1. [DeepL Translate](#DeepL-Translate)
 2. [Catify](#Catify)
-3. [Basically Preview EN](#Basically-Preview-EN)
-4. [Note MFM Toggle](note-mfm-toggle)
-5. [Sauce Nao](#SauceNao)
+3. [Note MFM Toggle](note-mfm-toggle)
+4. [Sauce Nao](#SauceNao)
 
 ## DeepL Translate
 
@@ -40,19 +43,6 @@ experience even more catty. Features include:
 
 All features are enabled by default, but can be disabled in the plugin
 configuration.
-
-## Basically Preview EN
-
-* **Author**: hakohako_f2 with translation by Robflop
-* **Date**: 2021-02-16
-* **Misskey Version**: 12.85.1
-* **Description**: This is a plugin that lets you immediately view a preview of
-your post from within the post form, similar to functionality in Pleroma's
-frontend, but not real-time.
-
-You can enable always showing a preview before submitting a post by going to:
-
-`Settings → Plugins → Manage plugins → Settings button of "Basically Preview EN"`
 
 ## Note MFM Toggle
 
