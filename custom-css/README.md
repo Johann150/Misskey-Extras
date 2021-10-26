@@ -52,3 +52,27 @@ overflow.
 * **Misskey Version**: 12.90.1
 * **Description**: Plays an ear wiggle animation on hovering over avatars. Basically
 what the pleroma-mod-catify had, but now for misskey
+
+## Hide "You" in Mentions
+* **Author**: Amolith
+* **Date**: 2021-10-25
+* **Misskey Version**: 12.94.1
+* **Description**: Hide the tiny text next to your handle that says "You" when someone mentions you:
+
+```
+.me {
+  display: none;
+}
+```
+
+## Hide Profile Icon in Mentions
+* **Author**: Amolith
+* **Date**: 2021-10-25
+* **Misskey Version**: 12.94.1
+* **Description**: Hide the profile picture icon next to a handle in a post:
+
+```
+.icon {
+  display: none;
+}
+```
