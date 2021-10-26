@@ -9,6 +9,8 @@ or behaves.
 2. [MFM on Hover](#MFM-on-Hover)
 3. [Post Replies slide out](#Post-Replies-slide-out)
 4. [Wiggly Cat ears](#Wiggly-Cat-Ears)
+5. [Hide "You" in Mentions](#Hide-You-in-Mentions)
+6. [Hide Profile Icon in Mentions](#Hide-Profile-Icon-in-Mentions)
 
 ## Post Replies on Hover
 
