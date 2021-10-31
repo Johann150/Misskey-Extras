@@ -1,18 +1,18 @@
 diff --git a/src/client/components/google.vue b/src/client/components/google.vue
-index 6d8ae0b5b..c71d20307 100644
+index be724f038..aa8e5e586 100644
 --- a/src/client/components/google.vue
 +++ b/src/client/components/google.vue
-@@ -22,7 +22,7 @@ export default defineComponent({
+@@ -26,7 +26,7 @@ export default defineComponent({
+ 	},
  	methods: {
  		search() {
- 			const engine = this.$store.state.webSearchEngine ||
--				'https://www.google.com/search?q={{query}}';
-+				'https://lite.qwant.com/?q={{query}}';
- 			const url = engine.replace('{{query}}', this.query)
- 			window.open(url, '_blank');
+-			window.open(`https://www.google.com/search?q=${this.query}`, '_blank');
++			window.open(`https://lite.qwant.com/?q=${this.query}`, '_blank');
  		}
+ 	}
+ });
 diff --git a/src/mfm/to-html.ts b/src/mfm/to-html.ts
-index aa39443c6..6dd4852f5 100644
+index b3678a0dd..3e755b24f 100644
 --- a/src/mfm/to-html.ts
 +++ b/src/mfm/to-html.ts
 @@ -147,7 +147,7 @@ export function toHtml(nodes: mfm.MfmNode[] | null, mentionedRemoteUsers: IMenti
