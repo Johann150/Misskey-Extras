@@ -11,6 +11,7 @@ or behaves.
 4. [Wiggly Cat ears](#Wiggly-Cat-Ears)
 5. [Hide "You" in Mentions](#Hide-You-in-Mentions)
 6. [Hide Profile Icon in Mentions](#Hide-Profile-Icon-in-Mentions)
+7. [Stop Blinking Notification Dots](#Stop-Blinking-Notification-Dots)
 
 ## Post Replies on Hover
 
@@ -78,3 +79,9 @@ what the pleroma-mod-catify had, but now for misskey
   display: none;
 }
 ```
+
+## Stop Blinking Notification Dots
+* **Author**: Striker
+* **Date**: 2021-11-23
+* **Misskey Version**: 12.96.1
+* **Description**: Stop the blinking dots indicating you have unread notes.
