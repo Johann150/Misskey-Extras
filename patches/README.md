@@ -91,3 +91,26 @@ Keyoxide uses application/json for authentication, so add support for it.
 It is treated as a mastodon in Keyoxide specification.
 
 Ported from ayuskey 5.11.0.
+
+## Round time approximations
+
+* **Author**: Johann150
+* **Date**: 2021-11-24
+* **Misskey Version**: 12.97.1
+* **Description**: Properly round time approximations displayed in Misskey.
+
+Instead of flooring the time approximations, they are rounded. This leads to
+posts being displayed as "2 weeks ago" instead of "1 week ago" when they were
+13 days ago.
+
+## Extend Emoji list
+
+* **Author**:Johann150
+* **Date**: 2021-11-24
+* **Misskey Version**: 12.97.1
+* **Description**: Add some aliases and new emojis to the builtin emoji list.
+
+Adds the "pudding" synonym to the custard emoji, and also newly adds regional
+indicator emojis to the list. These are displayed as letters if alone. Note
+that these become the national flags if put next to each other, so the
+behaviour might be confusing to some people.
