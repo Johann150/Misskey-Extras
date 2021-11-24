@@ -13,6 +13,8 @@ Misskey any more.
 2. [Fix Leaky Mutes](#Fix-Leaky-Mutes)
 3. [Compact Notifications](#Compact-Notifications)
 4. [Compatibility Keyoxide](#compatibility-keyoxide)
+5. [Round time approximations](#Round-time-approximations)
+6. [Extend emoji list](#Extend-emoji-list)
 
 ## MFM search feature
 
