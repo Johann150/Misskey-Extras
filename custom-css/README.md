@@ -8,10 +8,9 @@ or behaves.
 1. [Post Replies on Hover](#Post-Replies-on-Hover)
 2. [MFM on Hover](#MFM-on-Hover)
 3. [Post Replies slide out](#Post-Replies-slide-out)
-4. [Wiggly Cat ears](#Wiggly-Cat-Ears)
-5. [Hide "You" in Mentions](#Hide-You-in-Mentions)
-6. [Hide Profile Icon in Mentions](#Hide-Profile-Icon-in-Mentions)
-7. [Stop Blinking Notification Dots](#Stop-Blinking-Notification-Dots)
+4. [Hide "You" in Mentions](#Hide-You-in-Mentions)
+5. [Hide Profile Icon in Mentions](#Hide-Profile-Icon-in-Mentions)
+6. [Stop Blinking Notification Dots](#Stop-Blinking-Notification-Dots)
 
 ## Post Replies on Hover
 
@@ -47,14 +46,6 @@ overflow.
 - Parent posts are shortened to the user name and first line of content.
 - When you hover over the parent post, the main post will slide down to make
   the rest of the parent post visible.
-
-## Wiggly Cat Ears
-
-* **Author**: Puniko
-* **Date**: 2021-09-10
-* **Misskey Version**: 12.90.1
-* **Description**: Plays an ear wiggle animation on hovering over avatars. Basically
-what the pleroma-mod-catify had, but now for misskey
 
 ## Hide "You" in Mentions
 * **Author**: Amolith

@@ -8,6 +8,7 @@ Misskey.
 ## List of Patches
 
 1. [Truncate Profiles](#Truncate-Profiles)
+2. [Collapsible Threads](#Collapsible-Threads)
 
 ## Truncate Profiles
 
@@ -34,3 +35,18 @@ Note however that for security reasons, user names (the `name` part in
 still a hard fail. Otherwise, this could lead to malicious actors being able to
 impersonate others.
 
+## Collapsible Threads
+
+* **Author**: Johann150
+* **Date**: 2021-08-14
+* **Misskey Version**: 12.87.0 - 12.97.0
+* **Description**: Make sub-threads collapsible when viewing a note.
+
+This patch adds some JavaScript to the Vue elements that make up the threads.
+It allows you to click on the left margin of a thread (e.g. the bar on the left
+that makes up a thread) to collapse it and its replies. You can of course also
+click in the left margin of a direct reply of the note you are viewing to
+collapse it.
+
+This patch is no longer deemed necessary because Misskey no longer displays replies
+at a depth of 5 or more.

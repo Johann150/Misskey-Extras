@@ -11,9 +11,8 @@ Misskey any more.
 
 1. [MFM search feature](#MFM-search-feature)
 2. [Fix Leaky Mutes](#Fix-Leaky-Mutes)
-3. [Collapsible Threads](#Collapsible-Threads)
-4. [Compact Notifications](#Compact-Notifications)
-5. [Compatibility Keyoxide](#compatibility-keyoxide)
+3. [Compact Notifications](#Compact-Notifications)
+4. [Compatibility Keyoxide](#compatibility-keyoxide)
 
 ## MFM search feature
 
@@ -56,19 +55,6 @@ this is not currently implemented in the UI.
 to encounter posts by that person or see posts which mention them thanks to
 some loopholes in the way that the system checks whether or not to hide a
 post. This patch fixes those issues.
-
-## Collapsible Threads
-
-* **Author**: Johann150
-* **Date**: 2021-08-14
-* **Misskey Version**: 12.87.0
-* **Description**: Make sub-threads collapsible when viewing a note.
-
-This patch adds some JavaScript to the Vue elements that make up the threads.
-It allows you to click on the left margin of a thread (e.g. the bar on the left
-that makes up a thread) to collapse it and its replies. You can of course also
-click in the left margin of a direct reply of the note you are viewing to
-collapse it.
 
 ## Compact Notifications
 
