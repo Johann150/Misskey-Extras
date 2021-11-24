@@ -60,7 +60,7 @@ post. This patch fixes those issues.
 
 * **Author**: Johann150
 * **Date**: 2021-08-23
-* **Misskey Version**: since 12.64.2
+* **Misskey Version**: 12.97.1
 * **Description**: Remove text of replied-to posts from notifications.
 
 The text of replied to or renoted notes is not shown in the notifications bar,
