@@ -1,0 +1,46 @@
+diff --git a/packages/client/src/emojilist.json b/packages/client/src/emojilist.json
+index 75c424ab4..ae6c61297 100644
+--- a/packages/client/src/emojilist.json
++++ b/packages/client/src/emojilist.json
+@@ -696,7 +696,7 @@
+ 	{ "category": "food_and_drink", "char": "🧁", "name": "cupcake", "keywords": ["food", "dessert", "bakery", "sweet"] },
+ 	{ "category": "food_and_drink", "char": "🥮", "name": "moon_cake", "keywords": ["food", "autumn"] },
+ 	{ "category": "food_and_drink", "char": "🎂", "name": "birthday", "keywords": ["food", "dessert", "cake"] },
+-	{ "category": "food_and_drink", "char": "🍮", "name": "custard", "keywords": ["dessert", "food"] },
++	{ "category": "food_and_drink", "char": "🍮", "name": "custard", "keywords": ["dessert", "food", "pudding"] },
+ 	{ "category": "food_and_drink", "char": "🍬", "name": "candy", "keywords": ["snack", "dessert", "sweet", "lolly"] },
+ 	{ "category": "food_and_drink", "char": "🍭", "name": "lollipop", "keywords": ["food", "snack", "candy", "sweet"] },
+ 	{ "category": "food_and_drink", "char": "🍫", "name": "chocolate_bar", "keywords": ["food", "snack", "dessert", "sweet"] },
+@@ -1745,5 +1745,31 @@
+ 	{ "category": "flags", "char": "🇿🇲", "name": "zambia", "keywords": ["zm", "flag", "nation", "country", "banner"] },
+ 	{ "category": "flags", "char": "🇿🇼", "name": "zimbabwe", "keywords": ["zw", "flag", "nation", "country", "banner"] },
+ 	{ "category": "flags", "char": "🇺🇳", "name": "united_nations", "keywords": ["un", "flag", "banner"] },
+-	{ "category": "flags", "char": "🏴‍☠️", "name": "pirate_flag", "keywords": ["skull", "crossbones", "flag", "banner"] }
++	{ "category": "flags", "char": "🏴‍☠️", "name": "pirate_flag", "keywords": ["skull", "crossbones", "flag", "banner"] },
++	{ "category": "letters", "char": "🇦", "name": "regional_indicator_a", "keywords": ["letter", "a"] },
++	{ "category": "letters", "char": "🇧", "name": "regional_indicator_b", "keywords": ["letter", "b"] },
++	{ "category": "letters", "char": "🇨", "name": "regional_indicator_c", "keywords": ["letter", "c"] },
++	{ "category": "letters", "char": "🇩", "name": "regional_indicator_d", "keywords": ["letter", "d"] },
++	{ "category": "letters", "char": "🇪", "name": "regional_indicator_e", "keywords": ["letter", "e"] },
++	{ "category": "letters", "char": "🇫", "name": "regional_indicator_f", "keywords": ["letter", "f"] },
++	{ "category": "letters", "char": "🇬", "name": "regional_indicator_g", "keywords": ["letter", "g"] },
++	{ "category": "letters", "char": "🇭", "name": "regional_indicator_h", "keywords": ["letter", "h"] },
++	{ "category": "letters", "char": "🇮", "name": "regional_indicator_i", "keywords": ["letter", "i"] },
++	{ "category": "letters", "char": "🇯", "name": "regional_indicator_j", "keywords": ["letter", "j"] },
++	{ "category": "letters", "char": "🇰", "name": "regional_indicator_k", "keywords": ["letter", "k"] },
++	{ "category": "letters", "char": "🇱", "name": "regional_indicator_l", "keywords": ["letter", "l"] },
++	{ "category": "letters", "char": "🇲", "name": "regional_indicator_m", "keywords": ["letter", "m"] },
++	{ "category": "letters", "char": "🇳", "name": "regional_indicator_n", "keywords": ["letter", "n"] },
++	{ "category": "letters", "char": "🇴", "name": "regional_indicator_o", "keywords": ["letter", "o"] },
++	{ "category": "letters", "char": "🇵", "name": "regional_indicator_p", "keywords": ["letter", "p"] },
++	{ "category": "letters", "char": "🇶", "name": "regional_indicator_q", "keywords": ["letter", "q"] },
++	{ "category": "letters", "char": "🇷", "name": "regional_indicator_r", "keywords": ["letter", "r"] },
++	{ "category": "letters", "char": "🇸", "name": "regional_indicator_s", "keywords": ["letter", "s"] },
++	{ "category": "letters", "char": "🇹", "name": "regional_indicator_t", "keywords": ["letter", "t"] },
++	{ "category": "letters", "char": "🇺", "name": "regional_indicator_u", "keywords": ["letter", "u"] },
++	{ "category": "letters", "char": "🇻", "name": "regional_indicator_v", "keywords": ["letter", "v"] },
++	{ "category": "letters", "char": "🇼", "name": "regional_indicator_w", "keywords": ["letter", "w"] },
++	{ "category": "letters", "char": "🇽", "name": "regional_indicator_x", "keywords": ["letter", "x"] },
++	{ "category": "letters", "char": "🇾", "name": "regional_indicator_y", "keywords": ["letter", "y"] },
++	{ "category": "letters", "char": "🇿", "name": "regional_indicator_z", "keywords": ["letter", "z"] }
+ ]

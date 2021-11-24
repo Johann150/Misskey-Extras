@@ -1,0 +1,21 @@
+diff --git a/packages/client/src/components/global/time.vue b/packages/client/src/components/global/time.vue
+index 6a330a230..092b0f2b3 100644
+--- a/packages/client/src/components/global/time.vue
++++ b/packages/client/src/components/global/time.vue
+@@ -37,11 +37,11 @@ export default defineComponent({
+ 			const time = this._time;
+ 			const ago = (this.now.getTime() - time.getTime()) / 1000/*ms*/;
+ 			return (
+-				ago >= 31536000 ? this.$t('_ago.yearsAgo',   { n: (~~(ago / 31536000)).toString() }) :
+-				ago >= 2592000  ? this.$t('_ago.monthsAgo',  { n: (~~(ago / 2592000)).toString() }) :
+-				ago >= 604800   ? this.$t('_ago.weeksAgo',   { n: (~~(ago / 604800)).toString() }) :
+-				ago >= 86400    ? this.$t('_ago.daysAgo',    { n: (~~(ago / 86400)).toString() }) :
+-				ago >= 3600     ? this.$t('_ago.hoursAgo',   { n: (~~(ago / 3600)).toString() }) :
++				ago >= 31536000 ? this.$t('_ago.yearsAgo',   { n: Math.round(ago / 31536000).toString() }) :
++				ago >= 2592000  ? this.$t('_ago.monthsAgo',  { n: Math.round(ago / 2592000).toString() }) :
++				ago >= 604800   ? this.$t('_ago.weeksAgo',   { n: Math.round(ago / 604800).toString() }) :
++				ago >= 86400    ? this.$t('_ago.daysAgo',    { n: Math.round(ago / 86400).toString() }) :
++				ago >= 3600     ? this.$t('_ago.hoursAgo',   { n: Math.round(ago / 3600).toString() }) :
+ 				ago >= 60       ? this.$t('_ago.minutesAgo', { n: (~~(ago / 60)).toString() }) :
+ 				ago >= 10       ? this.$t('_ago.secondsAgo', { n: (~~(ago % 60)).toString() }) :
+ 				ago >= -1       ? this.$ts._ago.justNow :

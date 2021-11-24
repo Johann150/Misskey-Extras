@@ -1,18 +1,16 @@
-
-
-diff --git a/src/misc/get-note-summary.ts b/src/misc/get-note-summary.ts
-index a1866fb20..53c6cf863 100644
---- a/src/misc/get-note-summary.ts
-+++ b/src/misc/get-note-summary.ts
-@@ -30,6 +30,7 @@ export const getNoteSummary = (note: any, locale: any): string => {
- 		summary += ` (${locale['poll']})`;
+diff --git a/packages/client/src/scripts/get-note-summary.ts b/packages/client/src/scripts/get-note-summary.ts
+index bd394279c..6cd792b89 100644
+--- a/packages/client/src/scripts/get-note-summary.ts
++++ b/packages/client/src/scripts/get-note-summary.ts
+@@ -33,6 +33,7 @@ export const getNoteSummary = (note: misskey.entities.Note): string => {
+ 		summary += ` (${i18n.locale.poll})`;
  	}
  
 +	/*
  	// 返信のとき
  	if (note.replyId) {
  		if (note.reply) {
-@@ -47,6 +48,7 @@ export const getNoteSummary = (note: any, locale: any): string => {
+@@ -50,6 +51,7 @@ export const getNoteSummary = (note: misskey.entities.Note): string => {
  			summary += '\n\nRN: ...';
  		}
  	}
