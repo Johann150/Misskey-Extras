@@ -16,6 +16,7 @@ Misskey any more.
 2. [Catify](#Catify)
 3. [Note MFM Toggle](note-mfm-toggle)
 4. [Sauce Nao](#SauceNao)
+5. [De-nyanify](#De-nyanify)
 
 ## DeepL Translate
 
@@ -66,5 +67,13 @@ Please note that this might not catch some MFM styles. (yet?)
 * **Misskey Version**: 12.86.0
 * **Description**: This plugin adds a button to each note that will try to reverse
 image search with [SauceNao](http://saucenao.com) using the first attachment of that
-note. Its based on fristi's pleroma-mod and uses Volpeon's Deepl Plugin as basis. 
+note. Its based on fristi's pleroma-mod and uses Volpeon's Deepl Plugin as basis.
 This plugin is still a work in progress as it has space for lots of improvement.
+
+## De-nyanify
+
+* **Author**: Volpeon
+* **Date**: 2021-12-13
+* **Misskey Version**: 12.98.0
+* **Description**: Remove the auto-inserted "nya"s when you have cat-mode
+  enabled. (Basically, keep the ears but get rid of the rest of cat mode.)
