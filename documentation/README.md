@@ -88,3 +88,15 @@ to operate well.
 * **Misskey Version**: 12.88.0
 * **Description**: An MFM editor was created to allow easy experimentation and 
 crafting of MFM Art. It can be found at: https://mfm.absturztau.be/
+
+## Enabling push notifications
+
+* **Author**: Normandy
+* **Date**: 2022-01-26
+* **Misskey Version**: 12.102.0
+* **Description**: How to enable push notifications for your instance
+
+To enable push notifications for your instance:
+1. Run this command on your server to generate the required VPAID keys: `npx web-push generate-vapid-keys`. You can also use an online VPAID key generator instead if you wish.
+2. Enable ServiceWorker in Control Panel > General within Misskey. Copy the generated public and private keys into the appropriate fields.
+3. If you haven't done so already, grant the notifications permission from your browser in Misskey.
