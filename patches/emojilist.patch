@@ -1,5 +1,5 @@
 diff --git a/packages/client/src/emojilist.json b/packages/client/src/emojilist.json
-index 75c424ab4..ae6c61297 100644
+index 2ff7efa46..ae6c61297 100644
 --- a/packages/client/src/emojilist.json
 +++ b/packages/client/src/emojilist.json
 @@ -696,7 +696,7 @@
@@ -44,3 +44,13 @@ index 75c424ab4..ae6c61297 100644
 +	{ "category": "letters", "char": "🇾", "name": "regional_indicator_y", "keywords": ["letter", "y"] },
 +	{ "category": "letters", "char": "🇿", "name": "regional_indicator_z", "keywords": ["letter", "z"] }
  ]
+diff --git a/packages/client/src/scripts/emojilist.ts b/packages/client/src/scripts/emojilist.ts
+index bd8689e4f..09eef8813 100644
+--- a/packages/client/src/scripts/emojilist.ts
++++ b/packages/client/src/scripts/emojilist.ts
+@@ -1,4 +1,4 @@
+-export const unicodeEmojiCategories = ['face', 'people', 'animals_and_nature', 'food_and_drink', 'activity', 'travel_and_places', 'objects', 'symbols', 'flags'] as const;
++export const unicodeEmojiCategories = ['face', 'people', 'animals_and_nature', 'food_and_drink', 'activity', 'travel_and_places', 'objects', 'symbols', 'letters', 'flags'] as const;
+ 
+ export type UnicodeEmojiDef = {
+ 	name: string;
