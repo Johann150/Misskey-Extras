@@ -9,6 +9,7 @@ Misskey.
 
 1. [Truncate Profiles](#Truncate-Profiles)
 2. [Collapsible Threads](#Collapsible-Threads)
+3. [Round time approximations](#Round-time-approximations)
 
 ## Truncate Profiles
 
@@ -50,3 +51,14 @@ collapse it.
 
 This patch is no longer deemed necessary because Misskey no longer displays replies
 at a depth of 5 or more.
+
+## Round time approximations
+
+* **Author**: Johann150
+* **Date**: 2021-11-24
+* **Misskey Version**: 12.97.1 - 12.103.0
+* **Description**: Properly round time approximations displayed in Misskey.
+
+Instead of flooring the time approximations, they are rounded. This leads to
+posts being displayed as "2 weeks ago" instead of "1 week ago" when they were
+13 days ago.

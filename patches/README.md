@@ -13,8 +13,7 @@ Misskey any more.
 2. [Fix Leaky Mutes](#Fix-Leaky-Mutes)
 3. [Compact Notifications](#Compact-Notifications)
 4. [Compatibility Keyoxide](#compatibility-keyoxide)
-5. [Round time approximations](#Round-time-approximations)
-6. [Extend emoji list](#Extend-emoji-list)
+5. [Extend emoji list](#Extend-emoji-list)
 
 ## MFM search feature
 
@@ -79,17 +78,6 @@ Keyoxide uses application/json for authentication, so add support for it.
 It is treated as a mastodon in Keyoxide specification.
 
 Ported from ayuskey 5.11.0.
-
-## Round time approximations
-
-* **Author**: Johann150
-* **Date**: 2021-11-24
-* **Misskey Version**: 12.97.1
-* **Description**: Properly round time approximations displayed in Misskey.
-
-Instead of flooring the time approximations, they are rounded. This leads to
-posts being displayed as "2 weeks ago" instead of "1 week ago" when they were
-13 days ago.
 
 ## Extend Emoji list
 
