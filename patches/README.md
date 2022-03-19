@@ -99,6 +99,10 @@ behaviour might be confusing to some people.
 * **Misskey Version**: since 12.99.0
 * **Description**: Turns Star reactions into ordinary ActivityPub likes.
 
+⚠️ Depending on when you read this, you may also need to patch the issue
+[misskey-dev/misskey#8428](https://github.com/misskey-dev/misskey/pull/8428)
+for this to always behave correctly.
+
 With this patch, all star reactions will be turned into an ordinary like
 activity which will allow you to star a post from Pleroma. Since Mastodon
 only understands likes anyway, its behaviour will not change. Star reacts
