@@ -1,0 +1,17 @@
+diff --git a/packages/backend/src/remote/activitypub/renderer/like.ts b/packages/backend/src/remote/activitypub/renderer/like.ts
+index 1bf36d470..6f3974291 100644
+--- a/packages/backend/src/remote/activitypub/renderer/like.ts
++++ b/packages/backend/src/remote/activitypub/renderer/like.ts
+@@ -12,8 +12,10 @@ export const renderLike = async (noteReaction: NoteReaction, note: Note) => {
+ 		id: `${config.url}/likes/${noteReaction.id}`,
+ 		actor: `${config.url}/users/${noteReaction.userId}`,
+ 		object: note.uri ? note.uri : `${config.url}/notes/${noteReaction.noteId}`,
+-		content: reaction,
+-		_misskey_reaction: reaction,
++		... (reaction !== '\u2b50' ? {
++			content: reaction,
++			_misskey_reaction: reaction,
++		} : {}),
+ 	} as any;
+ 
+ 	if (reaction.startsWith(':')) {
