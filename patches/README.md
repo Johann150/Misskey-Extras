@@ -14,6 +14,7 @@ Misskey any more.
 3. [Compact Notifications](#Compact-Notifications)
 4. [Compatibility Keyoxide](#compatibility-keyoxide)
 5. [Extend emoji list](#Extend-emoji-list)
+6. [Star is Like](#Star-is-Like)
 
 ## MFM search feature
 
@@ -90,3 +91,19 @@ Adds the "pudding" synonym to the custard emoji, and also newly adds regional
 indicator emojis to the list. These are displayed as letters if alone. Note
 that these become the national flags if put next to each other, so the
 behaviour might be confusing to some people.
+
+## Star is Like
+
+* **Author**: Johann150
+* **Date**: 2022-03-19
+* **Misskey Version**: since 12.99.0
+* **Description**: Turns Star reactions into ordinary ActivityPub likes.
+
+⚠️ Depending on when you read this, you may also need to patch the issue
+[misskey-dev/misskey#8428](https://github.com/misskey-dev/misskey/pull/8428)
+for this to always behave correctly.
+
+With this patch, all star reactions will be turned into an ordinary like
+activity which will allow you to star a post from Pleroma. Since Mastodon
+only understands likes anyway, its behaviour will not change. Star reacts
+may be displayed as a thumbs up reaction on other Misskey instances.
