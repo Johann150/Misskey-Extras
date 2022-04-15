@@ -1,5 +1,5 @@
 # Misskey-Extras
-Language: [English](https://github.com/JakeMBauer/Misskey-Extras) / [Japanese](https://github.com/JakeMBauer/Misskey-Extras/blob/master/README-JA.md)
+[English](https://github.com/JakeMBauer/Misskey-Extras) / [日本語](https://github.com/JakeMBauer/Misskey-Extras/blob/master/README-JA.md)
 
 人気のあるFediverseソフトウェア、[Misskey](https://github.com/misskey-dev/misskey)向けのTipやトリックやテーマやプラグインなどのコレクションです。<br>
 
