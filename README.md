@@ -1,4 +1,5 @@
 # Misskey-Extras
+[English](https://github.com/JakeMBauer/Misskey-Extras) / [日本語](https://github.com/JakeMBauer/Misskey-Extras/blob/master/README-JA.md)
 
 A collection of tips, tricks, themes, plugins, and more for the popular
 Fediverse software [Misskey](https://github.com/misskey-dev/misskey).
