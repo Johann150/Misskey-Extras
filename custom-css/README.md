@@ -72,7 +72,7 @@ overflow.
 ```
 
 ## Stop Blinking Notification Dots
-* **Author**: Striker
+* **Author**: Liz
 * **Date**: 2021-11-23
 * **Misskey Version**: 12.96.1
 * **Description**: Stop the blinking dots indicating you have unread notes.
