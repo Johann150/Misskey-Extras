@@ -1,8 +1,9 @@
+/// @0.13.3
 ### {
   name: "DeepL Translate"
-  version: "1.1.1"
   author:  "volpeon"
   description: "Translate posts from any language into any other language with DeepL"
+  version: "1.1."
   permission: []
   config: {
     target_language: {
